@@ -108,20 +108,23 @@
         var futureEps = e2; //未来每股收益
         if (total) futureEps = e2 / total;
         var currentPirceOfPE = price / futureEps;
-
-        console.log(`净利润增速为：${g}`);
+        var gPrice = (g * futureEps).toFixed(2); // 估值
+        var prcent = ((gPrice - price) / price).toFixed(2) * 100 + '%';
         console.log(`当前价格${price}估算未来PE为：${currentPirceOfPE}`);
+        console.log(`净利润增速为：${g}`);
         console.log(`合理估值为：${g * futureEps}`);
         const info = document.getElementById("info");
         info.innerHTML = `
-        PEG为：<span class="value">${(currentPirceOfPE / g).toFixed(
+        未来PE为：<span class="value">${currentPirceOfPE.toFixed(
           2
         )}</span><br>
         净利润增速为：<span class="value">${g.toFixed(2)}</span><br>
-        当前价格${price}估算未来PE为：<span class="value">${currentPirceOfPE.toFixed(
+        PEG为：<span class="value">${(currentPirceOfPE / g).toFixed(
           2
         )}</span><br>
-        合理估值为：<span class="value">${(g * futureEps).toFixed(2)}</span>
+        当前价格为：<span class="value">${price}</span><br>
+        合理估值为：<span class="value">${gPrice}</span><br>
+        套利空间为：<span class="value">${prcent}</span>
         `;
         return currentPirceOfPE / g;
       };
