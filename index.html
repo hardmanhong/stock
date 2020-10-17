@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>估值</title>
+    <style>
+      body {
+        text-align: center;
+      }
+      form {
+      }
+      .item {
+        margin-top: 20px;
+        height: 30px;
+      }
+      label {
+        display: inline-block;
+        width: 120px;
+        margin-right: 10px;
+        text-align: right;
+      }
+      .field {
+        width: 170px;
+        height: 34px;
+        border-radius: 2px;
+        border: 1px solid #ddd;
+        padding: 1px 2px;
+        box-sizing: border-box;
+      }
+      #total {
+        display: none;
+      }
+      button {
+        width: 165px;
+        height: 30px;
+        line-height: 30px;
+        text-align: center;
+        color: #fff;
+        background-color: #1890ff;
+        border-color: #1890ff;
+        text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.12);
+        -webkit-box-shadow: 0 2px 0 rgba(0, 0, 0, 0.045);
+        box-shadow: 0 2px 0 rgba(0, 0, 0, 0.045);
+        outline: 0;
+        border: 1px solid transparent;
+        border-radius: 2px;
+      }
+      #info {
+        margin-left: 120px;
+        margin-top: 50px;
+        line-height: 2em;
+      }
+      .value {
+        font-size: 16px;
+        font-weight: bold;
+        color: red;
+      }
+    </style>
+  </head>
+  <body>
+    <form onsubmit="onSubmit(event,this)">
+      <!-- <div class="item">
+        <label>股票代码</label><input name="code" class="field" />
+      </div> -->
+      <div class="item">
+        <label>估值类型</label
+        ><select
+          name="type"
+          id="type"
+          class="select-type field"
+          onchange="onTypeChange(this)"
+        >
+          <option value="1">EPS</option>
+          <option value="2">净利润</option>
+        </select>
+      </div>
+      <div class="item">
+        <label>当前股价</label><input name="price" class="field" />
+      </div>
+      <div class="item">
+        <label>EPS1/净利润1</label><input name="e1" class="field" />
+      </div>
+      <div class="item">
+        <label>EPS2/净利润2</label><input name="e2" class="field" />
+      </div>
+      <div class="item">
+        <label>年数</label><input name="years" class="field" value="1" />
+      </div>
+      <div class="item" id="total">
+        <label>总股本</label><input name="total" class="field" />
+      </div>
+      <div class="item"><label></label><button type="submit">估值</button></div>
+      <div id="info"></div>
+    </form>
+    <script>
+      var getStockPrice = (code) => {
+        const prefix2 = code.slice(0, 2);
+        const prefix3 = code.slice(0, 3);
+        const shPrefix = [60, 688];
+        const szPrefix = [000, 002, 300];
+        const isSh = shPrefix.includes(+prefix2) || shPrefix.includes(+prefix3);
+        const isSz = shPrefix.includes(+prefix3);
+        const prefix = isSh ? "sh" : "sz";
+      };
+      var computedStock = async ({ e1, e2, years = 1, total, code }) => {
+        var price = await getStockPrice(code);
+        console.log("price", price);
+        var g = (Math.pow(e2 / e1, 1 / years) - 1) * 100;
+        var futureEps = e2; //未来每股收益
+        if (total) futureEps = e2 / total;
+        var currentPirceOfPE = price / futureEps;
+
+        console.log(`净利润增速为：${g}`);
+        console.log(`当前价格${price}估算未来PE为：${currentPirceOfPE}`);
+        console.log(`合理估值为：${g * futureEps}`);
+        const info = document.getElementById("info");
+        info.innerHTML = `
+        PEG为：<span class="value">${(currentPirceOfPE / g).toFixed(
+          2
+        )}</span><br>
+        净利润增速为：<span class="value">${g.toFixed(2)}</span><br>
+        当前价格${price}估算未来PE为：<span class="value">${currentPirceOfPE.toFixed(
+          2
+        )}</span><br>
+        合理估值为：<span class="value">${(g * futureEps).toFixed(2)}</span>
+        `;
+        return currentPirceOfPE / g;
+      };
+      var onTypeChange = (e) => {
+        console.dir(e);
+        const type = e.value;
+        const totalElm = document.getElementById("total");
+        totalElm.style.display = type == 1 ? "none" : "block";
+      };
+      var onSubmit = (e, form) => {
+        e.preventDefault();
+        var formdata = new FormData(form);
+        const type = formdata.get("type");
+        const data = {};
+        for (let [key, value] of formdata.entries()) {
+          data[key] = value;
+        }
+        console.log(data);
+        computedStock(data);
+      };
+    </script>
+  </body>
+</html>
