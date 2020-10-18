@@ -103,21 +103,19 @@
         const isSz = shPrefix.includes(+prefix3);
         const prefix = isSh ? "sh" : "sz";
       };
-      var computedStock = async ({ type,e1, e2, years = 1, total, price }) => {
+      var computedStock = async ({ type, e1, e2, years = 1, total, price }) => {
         var g = (Math.pow(e2 / e1, 1 / years) - 1) * 100;
         var futureEps = e2; //未来每股收益
-        if (type==2) futureEps = e2 / total;
+        if (type == 2) futureEps = e2 / total;
         var currentPirceOfPE = price / futureEps;
         var gPrice = (g * futureEps).toFixed(2); // 估值
-        var prcent = ((gPrice - price) / price).toFixed(2) * 100 + '%';
+        var prcent = ((gPrice - price) / price).toFixed(2) * 100 + "%";
         console.log(`当前价格${price}估算未来PE为：${currentPirceOfPE}`);
         console.log(`年复合增速为：${g}`);
         console.log(`合理估值为：${g * futureEps}`);
         const info = document.getElementById("info");
         info.innerHTML = `
-        未来PE为：<span class="value">${currentPirceOfPE.toFixed(
-          2
-        )}</span><br>
+        未来PE为：<span class="value">${currentPirceOfPE.toFixed(2)}</span><br>
         年复合增速为：<span class="value">${g.toFixed(2)}</span><br>
         PEG为：<span class="value">${(currentPirceOfPE / g).toFixed(
           2
@@ -129,7 +127,6 @@
         return currentPirceOfPE / g;
       };
       var onTypeChange = (e) => {
-        console.dir(e);
         const type = e.value;
         const totalElm = document.getElementById("total");
         totalElm.style.display = type == 1 ? "none" : "block";
