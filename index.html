@@ -110,19 +110,16 @@
         var currentPirceOfPE = price / futureEps;
         var gPrice = (g * futureEps).toFixed(2); // 估值
         var prcent = ((gPrice - price) / price).toFixed(2) * 100 + "%";
-        console.log(`当前价格${price}估算未来PE为：${currentPirceOfPE}`);
-        console.log(`年复合增速为：${g}`);
-        console.log(`合理估值为：${g * futureEps}`);
         const info = document.getElementById("info");
         info.innerHTML = `
-        未来PE为：<span class="value">${currentPirceOfPE.toFixed(2)}</span><br>
-        年复合增速为：<span class="value">${g.toFixed(2)}</span><br>
-        PEG为：<span class="value">${(currentPirceOfPE / g).toFixed(
+        当前价格：<span class="value">${price}</span><br>
+        PE：<span class="value">${currentPirceOfPE.toFixed(2)}</span><br>
+        G：<span class="value">${g.toFixed(2)}</span><br>
+        PEG：<span class="value">${(currentPirceOfPE / g).toFixed(
           2
         )}</span><br>
-        当前价格为：<span class="value">${price}</span><br>
-        合理估值为：<span class="value">${gPrice}</span><br>
-        套利空间为：<span class="value">${prcent}</span>
+        估值：<span class="value">${gPrice}</span><br>
+        套利空间：<span class="value">${prcent}</span>
         `;
         return currentPirceOfPE / g;
       };
