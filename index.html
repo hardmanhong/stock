@@ -103,10 +103,10 @@
         const isSz = shPrefix.includes(+prefix3);
         const prefix = isSh ? "sh" : "sz";
       };
-      var computedStock = async ({ e1, e2, years = 1, total, price }) => {
+      var computedStock = async ({ type,e1, e2, years = 1, total, price }) => {
         var g = (Math.pow(e2 / e1, 1 / years) - 1) * 100;
         var futureEps = e2; //未来每股收益
-        if (total) futureEps = e2 / total;
+        if (type==2) futureEps = e2 / total;
         var currentPirceOfPE = price / futureEps;
         var gPrice = (g * futureEps).toFixed(2); // 估值
         var prcent = ((gPrice - price) / price).toFixed(2) * 100 + '%';
@@ -137,7 +137,6 @@
       var onSubmit = (e, form) => {
         e.preventDefault();
         var formdata = new FormData(form);
-        const type = formdata.get("type");
         const data = {};
         for (let [key, value] of formdata.entries()) {
           data[key] = value;
