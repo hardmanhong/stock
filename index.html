@@ -111,7 +111,7 @@
         var gPrice = (g * futureEps).toFixed(2); // 估值
         var prcent = ((gPrice - price) / price).toFixed(2) * 100 + '%';
         console.log(`当前价格${price}估算未来PE为：${currentPirceOfPE}`);
-        console.log(`净利润增速为：${g}`);
+        console.log(`年复合增速为：${g}`);
         console.log(`合理估值为：${g * futureEps}`);
         const info = document.getElementById("info");
         info.innerHTML = `
