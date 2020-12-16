@@ -109,7 +109,7 @@
         if (type == 2) futureEps = e2 / total;
         var currentPirceOfPE = price / futureEps;
         // 应该使用增速来计算未来价格
-        var futurePrice = (price * Math.pow(1 + g, years)).toFixed(2); // 估值
+        var futurePrice = (price * Math.pow(1 + g / 100, years)).toFixed(2); // 估值
         var prcent = ((futurePrice - price) / price).toFixed(2) * 100 + "%";
         const info = document.getElementById("info");
         info.innerHTML = `
