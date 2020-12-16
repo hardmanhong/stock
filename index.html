@@ -108,17 +108,16 @@
         var futureEps = e2; //未来每股收益
         if (type == 2) futureEps = e2 / total;
         var currentPirceOfPE = price / futureEps;
-        var gPrice = (g * futureEps).toFixed(2); // 估值
-        var prcent = ((gPrice - price) / price).toFixed(2) * 100 + "%";
+        // 应该使用增速来计算未来价格
+        var futurePrice = (price * Math.pow(1 + g, years)).toFixed(2); // 估值
+        var prcent = ((futurePrice - price) / price).toFixed(2) * 100 + "%";
         const info = document.getElementById("info");
         info.innerHTML = `
         当前价格：<span class="value">${price}</span><br>
         PE：<span class="value">${currentPirceOfPE.toFixed(2)}</span><br>
         G：<span class="value">${g.toFixed(2)}</span><br>
-        PEG：<span class="value">${(currentPirceOfPE / g).toFixed(
-          2
-        )}</span><br>
-        估值：<span class="value">${gPrice}</span><br>
+        PEG：<span class="value">${(currentPirceOfPE / g).toFixed(2)}</span><br>
+        估值：<span class="value">${futurePrice}</span><br>
         套利空间：<span class="value">${prcent}</span>
         `;
         return currentPirceOfPE / g;
